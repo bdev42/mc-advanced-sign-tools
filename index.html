@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Minecraft Advanced Sign Tools</title>
+    <style>
+        span {
+            margin: 2px;
+
+            & .error {
+                color: darkred;
+            }
+        }
+
+        .output img {
+            filter: invert(1);
+            image-rendering: pixelated;
+        }
+
+        table img {
+            width: auto;
+            height: 16px;
+        }
+
+        canvas {
+            image-rendering: pixelated;
+        }
+
+        table {
+            border-collapse: collapse;
+            text-align: center;
+            background-color: #eee;
+        }
+
+        tr:nth-child(even){background-color: #ddd;}
+
+        th {
+            padding: 8px 12px;
+            background-color: #5a8e32;
+            color: #eee;
+        }
+
+        summary {
+            background-color: #ddd;
+            padding: 8px;
+            margin: 8px 0;
+        }
+
+        details {
+            margin: 8px 4px;
+        }
+
+        table, td {
+            border: 1px solid #888;
+        }
+
+    </style>
+</head>
+<body>
+    <main>
+        <article id="tool-cwc">
+            <header>
+                <h1>Character Width Calculator</h1>
+            </header>
+            <form action="">
+                <fieldset>
+                    <legend>Font Mappings</legend>
+                    <input type="radio" name="font_mappings" id="fm-default" value="default" checked>
+                    <label for="fm-default">Default</label>
+
+                    <input type="radio" name="font_mappings" id="fm-upload" value="upload">
+                    <label for="fm-upload">Upload <input type="file" id="fm-upload-file" accept=".json"></label>
+
+                    <div id="fm-feedback"></div>
+                </fieldset>
+                <fieldset>
+                    <legend>Space Width</legend>
+                    <input type="radio" name="space_width" id="sw-default" value="default" checked>
+                    <label for="sw-default">Default</label>
+
+                    <input type="radio" name="space_width" id="sw-custom" value="custom">
+                    <label for="sw-custom">Custom <input type="number" id="sw-value" value="4" disabled min="0" step="1"></label>
+                </fieldset>
+            </form>
+            <div class="output">
+
+            </div>
+
+            <script type="application/javascript" src="character_width.js"></script>
+        </article>
+    </main>
+</body>
+</html>
