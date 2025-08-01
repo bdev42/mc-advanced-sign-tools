@@ -258,6 +258,8 @@ function read_uploaded_mappings() {
     reader.onload = (e) => {
         fm_file_content = e.target.result;
         console.timeEnd("fm_file_read");
+
+        form.querySelector("input#fm-upload").checked = true;
         run_tool();
     }
     reader.readAsText(fm_file.files[0]);
