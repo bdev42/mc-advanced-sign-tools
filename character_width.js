@@ -1,6 +1,6 @@
 
 let fm_default;
-fetch('/include/default.json').then((res) => {
+fetch('./include/default.json').then((res) => {
     res.json().then((res) => {
         fm_default = res;
         run_tool();
