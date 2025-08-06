@@ -1,3 +1,4 @@
+import {fb_span} from "./common.js";
 
 let fm_default;
 fetch('./include/default.json').then((res) => {
@@ -199,12 +200,4 @@ function analyze_character_width(img_data) {
     }
 
     return 0;
-}
-
-
-function fb_span(message, isError = true) {
-    const fb = document.createElement("span");
-    fb.innerText = "" + message;
-    if (isError) fb.classList.add("error");
-    return fb;
 }

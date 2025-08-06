@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Minecraft Character Width Calculator</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        .output {
+            img, canvas {
+                image-rendering: pixelated;
+            }
+
+            img {
+                filter: invert(1);
+            }
+
+            table img {
+                width: auto;
+                height: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <article id="tool-cwc">
+            <header>
+                <h1>Character Width Calculator</h1>
+                <p>This tool helps you easily determine the character widths of any minecraft bitmap font.</p>
+                <blockquote cite="https://minecraft.wiki/w/Font#Bitmap_provider">
+                    The glyphs' widths are automatically determined based on the last
+                    right-most column of pixels containing any alpha value above 0.
+                </blockquote>
+            </header>
+            <form action="">
+                <fieldset>
+                    <legend>Font Mappings <a href="https://minecraft.wiki/w/Font#Providers" target="_blank">wiki</a></legend>
+                    <input type="radio" name="font_mappings" id="fm-default" value="default" checked>
+                    <label for="fm-default">Default</label>
+
+                    <input type="radio" name="font_mappings" id="fm-upload" value="upload">
+                    <label for="fm-upload">Upload <input type="file" id="fm-upload-file" accept=".json"></label>
+
+                    <div id="fm-feedback"></div>
+                </fieldset>
+                <fieldset>
+                    <legend>Space Width</legend>
+                    <input type="radio" name="space_width" id="sw-default" value="default" checked>
+                    <label for="sw-default">Default</label>
+
+                    <input type="radio" name="space_width" id="sw-custom" value="custom">
+                    <label for="sw-custom">Custom <input type="number" id="sw-value" value="4" disabled min="0" step="1"></label>
+                </fieldset>
+            </form>
+            <div class="output">
+                <!-- GENERATED OUTPUT -->
+            </div>
+
+            <script type="module" src="character_width.js" defer></script>
+        </article>
+    </main>
+</body>
+</html>
