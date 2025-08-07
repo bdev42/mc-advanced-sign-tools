@@ -19,6 +19,11 @@
                 height: 16px;
             }
         }
+
+        .atlas-override {
+            display: inline-block;
+            float: right;
+        }
     </style>
 </head>
 <body>
@@ -39,7 +44,7 @@
                     <label for="fm-default">Default</label>
 
                     <input type="radio" name="font_mappings" id="fm-upload" value="upload">
-                    <label for="fm-upload">Upload <input type="file" id="fm-upload-file" accept=".json"></label>
+                    <label for="fm-upload">Custom JSON: <input type="file" id="fm-upload-file" accept=".json"></label>
 
                     <div id="fm-feedback"></div>
                 </fieldset>

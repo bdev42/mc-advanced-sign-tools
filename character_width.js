@@ -102,6 +102,9 @@ function redraw_bitmaps_list() {
 
         const s = document.createElement("summary");
         s.innerText = "" + bitmap.file;
+        const ao = atlas_override(bitmap, d);
+        s.appendChild(ao);
+
         const i = document.createElement("img");
         i.src = "textures/" + bitmap.file;
         const t = document.createElement("table");
@@ -113,14 +116,51 @@ function redraw_bitmaps_list() {
     }
 }
 
+function atlas_override(bitmap, parent_details) {
+    const ao = document.createElement("div");
+    ao.className = "atlas-override";
+
+    const ao_checkbox = document.createElement("input");
+    ao_checkbox.type = "checkbox";
+    ao_checkbox.id = "ao-" + bitmap.file;
+
+    const ao_label = document.createElement("label");
+    ao_label.for = ao_checkbox.id;
+    const ao_file = document.createElement("input");
+    ao_file.type = "file";
+    ao_file.accept = "image/png";
+    ao_label.append("Replace: ", ao_file);
+
+    ao_checkbox.addEventListener("change", () => {
+        const img = parent_details.querySelector("img");
+
+        img.src = "textures/" + bitmap.file;
+        if (ao_checkbox.checked) {
+            if (!ao_file.files.length) return;
+            img.src = URL.createObjectURL(ao_file.files[0]);
+        }
+
+        if (!parent_details.open) return;
+        parent_details.open = false;
+        img.onload = () => {
+            parent_details.open = true;
+            img.onload = null;
+        }
+    })
+
+    ao.append(ao_checkbox, ao_label);
+    return ao;
+}
+
 
 async function process_bitmap(toggle_event, bitmap) {
     const details = toggle_event.target;
     if (!details.open) return;
-    
+    details.querySelectorAll(".fb").forEach(e => e.remove());
+
     const img = details.querySelector("img");
     if (!img.complete || img.naturalWidth === 0) {
-        img.replaceWith(fb_span("Failed to find and load atlas: " + img.src));
+        img.after(fb_span("Failed to find and load atlas: " + img.src));
         return;
     }
 
