@@ -20,6 +20,23 @@ a {
     }
 }
 
+#scroll-to-top {
+    display: block;
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+
+    font-size: 24px;
+    border-radius: 24px;
+    padding: 2px;
+
+    background-color: lightgray;
+    border: dimgray solid 2px;
+    opacity: 33%;
+    transition: opacity 500ms;
+    &:hover { opacity: 100%; }
+}
+
 blockquote {
     border-left: 5px solid #888;
     margin-left: 5px;

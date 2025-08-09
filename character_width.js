@@ -1,13 +1,12 @@
 import {fb_span} from "./common.js";
 
 let fm_default;
-fetch('./include/default.json').then((res) => {
+fetch('./font_mappings/default.json').then((res) => {
     res.json().then((res) => {
         fm_default = res;
         run_tool();
     })
 })
-
 let fm_file_content = null;
 
 /**
@@ -15,13 +14,17 @@ let fm_file_content = null;
  */
 /** @type {(BitmapProvider[])} */
 let bitmaps;
+let outputMap = new Map();
 
 
 const form = document.querySelector("#tool-cwc form");
+const os_count = document.querySelector("#output-summary span");
+const os_button = document.querySelector("#output-summary button");
 const fm_file = document.querySelector("input#fm-upload-file");
 const fm_fb = document.querySelector("#fm-feedback");
 const sw_value = document.querySelector("input#sw-value");
 
+os_button.addEventListener("click", download_output)
 fm_file.addEventListener("change", read_uploaded_mappings)
 form.onsubmit = (e) => e.preventDefault();
 form.addEventListener("change", run_tool);
@@ -67,6 +70,7 @@ function process_inputs() {
                 file: fm_parsed.providers[i].file.replace("minecraft:font/", ""),
                 ascent: fm_parsed.providers[i].ascent,
                 chars: fm_parsed.providers[i].chars,
+                height: fm_parsed.providers[i].height
             })
         }
 
@@ -74,6 +78,19 @@ function process_inputs() {
     }catch (e) {
         fm_fb.replaceChildren(fb_span("Failed to parse font mappings! "+e.message));
     }
+}
+
+function download_output() {
+    const a = document.createElement("a");
+    let txt = "";
+    for (let [key, value] of outputMap) {
+        txt += `${key}\t${value.width}\t${value.height}\t${value.ascent}\n`;
+    }
+    a.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(txt));
+    a.setAttribute("download", "char_sizes.txt");
+    a.style.display = "none";
+    a.click();
+    a.remove();
 }
 
 function read_uploaded_mappings() {
@@ -212,6 +229,8 @@ async function process_bitmap(toggle_event, bitmap) {
             glyph.getContext('2d').putImageData(img_data, 0, 0);
 
             // display result
+            outputMap.set(char, {width: real_char_width, height: bitmap.height ?? 8, ascent: bitmap.ascent});
+            os_count.innerText = outputMap.size;
             const res = document.createElement("tr");
             res.innerHTML = `<td>U+${char.codePointAt(0).toString(16).padStart(4, '0')}</td><td>${char}</td><td><img alt="Broken ${char} glyph" src="${glyph.toDataURL("image/png")}"></td><td>${real_char_width}</td>`
             table.appendChild(res);

@@ -20,6 +20,12 @@
             }
         }
 
+        #output-summary {
+            margin: 24px 2px;
+            padding: 8px;
+            border: #ccc groove 2px;
+        }
+
         .atlas-override {
             display: inline-block;
             float: right;
@@ -57,6 +63,7 @@
                     <label for="sw-custom">Custom <input type="number" id="sw-value" value="4" disabled min="0" step="1"></label>
                 </fieldset>
             </form>
+            <div id="output-summary">Processed <span>0</span> characters <button>Download</button></div>
             <div class="output">
                 <!-- GENERATED OUTPUT -->
             </div>
@@ -64,5 +71,6 @@
             <script type="module" src="character_width.js" defer></script>
         </article>
     </main>
+    <a id="scroll-to-top" href="#">🔝</a>
 </body>
 </html>
