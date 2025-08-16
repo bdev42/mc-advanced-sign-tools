@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Minecraft Sign Editor</title>
+    <link rel="stylesheet" href="common.css">
+    <style>
+        #mse-input {
+            display: block;
+            resize: horizontal;
+        }
+
+        #mse-output {
+            margin: 24px 0;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <article id="tool-mse">
+            <header>
+                <h1>Sign Editor</h1>
+                <p>A pixel accurate sign editor for minecraft, intended for ascii art.</p>
+            </header>
+            <label for="mse-input">Type the sign content here:</label>
+            <textarea id="mse-input" rows="4" cols="45" autofocus></textarea>
+
+            <canvas id="mse-output" width="384" height="192"></canvas>
+            <img id="mse-bg" src="textures/oak_front.png" alt="Sign background texture" style="display: none">
+
+            <script type="module" src="sign_editor.js" defer></script>
+        </article>
+    </main>
+    <a id="scroll-to-top" href="#">🔝</a>
+</body>
+</html>
