@@ -5,17 +5,34 @@
     <title>Minecraft Sign Editor</title>
     <link rel="stylesheet" href="common.css">
     <style>
+        label {
+            display: block;
+            text-align: center;
+        }
+
         #mse-input {
             display: block;
+            box-sizing: border-box;
             resize: horizontal;
+            margin: 2px auto;
+            width: 384px;
         }
 
         #mse-output {
-            margin: 24px 0;
+            display: block;
+            margin: 24px auto;
+            width: 384px;
+            height: 192px;
         }
     </style>
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="./character_width.html">Character Width Calculator</a></li>
+            <li><a href="./sign_editor.html" class="active">Sign Editor</a></li>
+        </ul>
+    </nav>
     <main>
         <article id="tool-mse">
             <header>
@@ -23,7 +40,7 @@
                 <p>A pixel accurate sign editor for minecraft, intended for ascii art.</p>
             </header>
             <label for="mse-input">Type the sign content here:</label>
-            <textarea id="mse-input" rows="4" cols="45" autofocus></textarea>
+            <textarea id="mse-input" rows="4" autofocus></textarea>
 
             <canvas id="mse-output" width="384" height="192"></canvas>
             <img id="mse-bg" src="textures/oak_front.png" alt="Sign background texture" style="display: none">

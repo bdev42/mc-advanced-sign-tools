@@ -3,10 +3,68 @@
     --mc-brown: #825432;
 }
 
+body {
+    image-rendering: pixelated;
+    background-image: radial-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url("textures/dirt.png");
+    background-repeat: repeat;
+    background-size: auto, 64px;
+    background-attachment: fixed;
+    min-height: 100vh;
+    margin: 0;
+}
+
 main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 24px;
+}
+
+article {
+    background-color: #eeeeee;
+    border-radius: 24px;
+    padding: 0 16px;
+}
+
+body > nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    font-size: 20px;
+    height: 64px;
+    overflow: hidden;
+    background-image: url("textures/grass.png");
+    background-repeat: repeat-x;
+    background-size: 64px;
+    padding-top: 8px;
+
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        height: 100%;
+    }
+
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 8px;
+        margin: 0 4px;
+        text-decoration: none;
+        box-shadow: 2px 2px 24px -8px black inset;
+
+        &:hover {
+            box-shadow: 2px 2px 24px -4px black inset;
+        }
+
+        &:active, &.active {
+            box-shadow: 2px 2px 24px 4px black inset;
+        }
+    }
 }
 
 span {
