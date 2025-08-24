@@ -72,8 +72,10 @@ function redraw_sign({layer_background, layer_overlay, center_text}) {
             ctx.fillRect(0, baseline, sign_margin+2, 1);
             ctx.fillRect(sign_width-(sign_margin+2), baseline, sign_margin+2, 1);
         }
+        const lineCanvas = new OffscreenCanvas(sign_width-sign_margin, sign_height);
+        const lineCtx = lineCanvas.getContext('2d');
 
-        let cursor = sign_margin;
+        let cursor = 0;
         for (let c = 0; c < lines[l].length; c++) {
             const char = lines[l][c];
             if (!char_sizes.has(char)) {
@@ -85,8 +87,8 @@ function redraw_sign({layer_background, layer_overlay, center_text}) {
             if (char === " ") {
                 if (layer_overlay) {
                     // draw space
-                    ctx.fillStyle = "#00ff0020";
-                    ctx.fillRect(cursor, baseline-char_size.ascent, char_size.width, char_size.height);
+                    lineCtx.fillStyle = "#00ff0020";
+                    lineCtx.fillRect(cursor, baseline-char_size.ascent, char_size.width, char_size.height);
                 }
                 cursor += char_size.width;
                 continue;
@@ -94,16 +96,22 @@ function redraw_sign({layer_background, layer_overlay, center_text}) {
 
             if (layer_overlay) {
                 // draw ascent
-                ctx.fillStyle = "#0000ff20";
-                ctx.fillRect(cursor, baseline-char_size.ascent, char_size.width, char_size.ascent);
+                lineCtx.fillStyle = "#0000ff20";
+                lineCtx.fillRect(cursor, baseline-char_size.ascent, char_size.width, char_size.ascent);
                 // draw descent
-                ctx.fillStyle = "#00ffff20";
-                ctx.fillRect(cursor, baseline, char_size.width, char_size.height-char_size.ascent);
+                lineCtx.fillStyle = "#00ffff20";
+                lineCtx.fillRect(cursor, baseline, char_size.width, char_size.height-char_size.ascent);
                 // draw gap
-                ctx.fillStyle = "#ffff0040";
-                ctx.fillRect(cursor+char_size.width, baseline-char_size.ascent, 1, char_size.height);
+                lineCtx.fillStyle = "#ffff0040";
+                lineCtx.fillRect(cursor+char_size.width, baseline-char_size.ascent, 1, char_size.height);
             }
             cursor += char_size.width+1;
+        }
+        // draw line onto output canvas
+        if (center_text && cursor < sign_width - 2*sign_margin) {
+            ctx.drawImage(lineCanvas, 0, 0, sign_width-sign_margin, sign_height, sign_width/2 - cursor/2, 0, sign_width-sign_margin, sign_height);
+        } else {
+            ctx.drawImage(lineCanvas, 0, 0, sign_width-sign_margin, sign_height, sign_margin, 0, sign_width-sign_margin, sign_height);
         }
     }
 }
