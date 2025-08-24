@@ -5,7 +5,7 @@
     <title>Minecraft Sign Editor</title>
     <link rel="stylesheet" href="common.css">
     <style>
-        label {
+        .centered-label {
             display: block;
             text-align: center;
         }
@@ -13,7 +13,7 @@
         #mse-input {
             display: block;
             box-sizing: border-box;
-            resize: horizontal;
+            resize: none;
             margin: 2px auto;
             width: 384px;
         }
@@ -23,6 +23,7 @@
             margin: 24px auto;
             width: 384px;
             height: 192px;
+            border: 1px solid black;
         }
     </style>
 </head>
@@ -39,8 +40,22 @@
                 <h1>Sign Editor</h1>
                 <p>A pixel accurate sign editor for minecraft, intended for ascii art.</p>
             </header>
-            <label for="mse-input">Type the sign content here:</label>
-            <textarea id="mse-input" rows="4" autofocus></textarea>
+            <form>
+                <fieldset>
+                    <legend>Display Options</legend>
+                    <input type="checkbox" id="mse-enable-overlay" checked>
+                    <label for="mse-enable-overlay">Show Overlay</label>
+
+                    <input type="checkbox" id="mse-enable-centering" disabled>
+                    <label for="mse-enable-centering">Center Text</label>
+
+                    <input type="checkbox" id="mse-enable-signbg" checked>
+                    <label for="mse-enable-signbg">Sign Background</label>
+                </fieldset>
+
+                <label for="mse-input" class="centered-label">Type the sign content here:</label>
+                <textarea id="mse-input" rows="4" autofocus></textarea>
+            </form>
 
             <canvas id="mse-output" width="384" height="192"></canvas>
             <img id="mse-bg" src="textures/oak_front.png" alt="Sign background texture" style="display: none">

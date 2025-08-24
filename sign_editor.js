@@ -3,8 +3,6 @@ const sign_height = 48;
 const sign_margin = 3;
 const scalingFactor = 4;
 
-let layer_overlay = true;
-
 console.time("load_char_sizes");
 let char_sizes = new Map();
 fetch('./out/char_sizes_full.txt').then((res) => {
@@ -26,7 +24,13 @@ const text = document.querySelector("textarea#mse-input");
 const sign = document.querySelector("canvas#mse-output");
 const background = document.querySelector("img#mse-bg");
 
-text.addEventListener("input", run_tool);
+const toggleBackground = document.querySelector("input#mse-enable-signbg");
+const toggleOverlay = document.querySelector("input#mse-enable-overlay");
+const toggleCentering = document.querySelector("input#mse-enable-centering");
+
+[text, toggleBackground, toggleOverlay, toggleCentering].forEach(el => {
+    el.addEventListener("input", run_tool);
+})
 /**
  * @type CanvasRenderingContext2D
  */
@@ -36,13 +40,22 @@ ctx.imageSmoothingEnabled = false;
 ctx.lineWidth = 1;
 
 function run_tool() {
+    redraw_sign({
+        layer_background: toggleBackground.checked,
+        layer_overlay: toggleOverlay.checked,
+        center_text: toggleCentering.checked
+    });
+}
+
+function redraw_sign({layer_background, layer_overlay, center_text}) {
     if (!char_sizes.size) {
         ctx.fillText("Loading...", 10, 20);
         return;
     }
 
     const lines = text.value.split("\n");
-    ctx.drawImage(background, 0, 0, sign_width, sign_height);
+    if (layer_background) ctx.drawImage(background, 0, 0, sign_width, sign_height);
+    else ctx.clearRect(0, 0, sign_width, sign_height);
 
     if (layer_overlay) {
         // draw margins
