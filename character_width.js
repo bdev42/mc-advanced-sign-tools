@@ -1,18 +1,11 @@
-import {extract_bitmaps_from_font_mappings, fb_span} from "./common.js";
+import {extract_bitmaps_from_font_mappings, fb_span, load_json} from "./common.js";
 
-let fm_default;
-fetch('./font_mappings/default.json').then((res) => {
-    res.json().then((res) => {
-        fm_default = res;
-        run_tool();
-    })
-})
+const fm_default = await load_json('./font_mappings/default.json');
 let fm_file_content = null;
 
 /** @type {(BitmapProvider[])} */
 let bitmaps= [];
 let outputMap = new Map();
-
 
 const form = document.querySelector("#tool-cwc form");
 const os_count = document.querySelector("#output-summary span");
@@ -25,12 +18,12 @@ os_button.addEventListener("click", download_output)
 fm_file.addEventListener("change", read_uploaded_mappings)
 form.onsubmit = (e) => e.preventDefault();
 form.addEventListener("change", run_tool);
-run_tool();
 
 function run_tool() {
     process_inputs();
     redraw_bitmaps_list();
 }
+run_tool();
 
 
 function process_inputs() {
