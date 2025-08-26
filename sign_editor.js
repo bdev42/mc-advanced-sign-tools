@@ -108,10 +108,8 @@ function redraw_sign({layer_background, layer_overlay, center_text}) {
             cursor += char_size.width+1;
         }
         // draw line onto output canvas
-        if (center_text && cursor < sign_width - 2*sign_margin) {
-            ctx.drawImage(lineCanvas, 0, 0, sign_width-sign_margin, sign_height, sign_width/2 - cursor/2, 0, sign_width-sign_margin, sign_height);
-        } else {
-            ctx.drawImage(lineCanvas, 0, 0, sign_width-sign_margin, sign_height, sign_margin, 0, sign_width-sign_margin, sign_height);
-        }
+        let line_start = sign_margin;
+        if (center_text && cursor < sign_width - 2*sign_margin) line_start = sign_width/2 - cursor/2;
+        ctx.drawImage(lineCanvas, 0, 0, sign_width-sign_margin, sign_height, line_start, 0, sign_width-sign_margin, sign_height);
     }
 }

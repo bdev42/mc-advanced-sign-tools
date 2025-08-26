@@ -1,4 +1,4 @@
-import {fb_span} from "./common.js";
+import {extract_bitmaps_from_font_mappings, fb_span} from "./common.js";
 
 let fm_default;
 fetch('./font_mappings/default.json').then((res) => {
@@ -9,11 +9,8 @@ fetch('./font_mappings/default.json').then((res) => {
 })
 let fm_file_content = null;
 
-/**
- * @typedef {{file: string, ascent: number, height?: number, chars: string[]}} BitmapProvider
- */
 /** @type {(BitmapProvider[])} */
-let bitmaps;
+let bitmaps= [];
 let outputMap = new Map();
 
 
@@ -31,7 +28,6 @@ form.addEventListener("change", run_tool);
 run_tool();
 
 function run_tool() {
-    bitmaps = [];
     process_inputs();
     redraw_bitmaps_list();
 }
@@ -60,19 +56,7 @@ function process_inputs() {
             fm_parsed = JSON.parse(fm_file_content);
         }
 
-        for (let i = 0; i < fm_parsed.providers.length; i++) {
-            if (fm_parsed.providers[i].type !== "bitmap") {
-                console.warn("Unsupported provider type: ", fm_parsed.providers[i].type);
-                continue;
-            }
-
-            bitmaps.push({
-                file: fm_parsed.providers[i].file.replace("minecraft:font/", ""),
-                ascent: fm_parsed.providers[i].ascent,
-                chars: fm_parsed.providers[i].chars,
-                height: fm_parsed.providers[i].height
-            })
-        }
+        bitmaps = extract_bitmaps_from_font_mappings(fm_parsed);
 
         fm_fb.replaceChildren(fb_span(`Found ${bitmaps.length} provider(s) in font mappings.`, false));
     }catch (e) {
@@ -187,12 +171,7 @@ async function process_bitmap(toggle_event, bitmap) {
     table.innerHTML = "<tr><th>unicode</th><th>char</th><th>img</th><th>width</th></tr>";
 
     // Find the number of rows and columns of characters in the atlas
-    let atlas_width = 0;
-    for(let chars_line of bitmap.chars) {
-        const len = [...chars_line].length;
-        if (len > atlas_width) atlas_width = len;
-    }
-    let atlas_height = bitmap.chars.length;
+    const {atlas_width, atlas_height} = bitmap;
     console.debug(`Atlas layout: ${atlas_width} x ${atlas_height} characters`)
 
     // Set progressbar target
@@ -214,13 +193,13 @@ async function process_bitmap(toggle_event, bitmap) {
 
     // Analyze texture of all non-"null" characters
     for (let cy = 0; cy < atlas_height; cy++) {
-        for (let cx = 0; cx < atlas_width && cx < [...bitmap.chars[cy]].length; cx++) {
-            const char = [...bitmap.chars[cy]][cx];
+        for (let cx = 0; cx < atlas_width && cx < bitmap.chars[cy].length; cx++) {
+            const char = bitmap.chars[cy][cx];
             if (char === "\u0000") { continue; }
 
             // extract real character width
             const img_data = ctx.getImageData(cx * tex_width, cy * tex_height, tex_width, tex_height);
-            const real_char_width = char === " " ? sw_value.value :  analyze_character_width(img_data);
+            const real_char_width = char === " " ? sw_value.value : analyze_character_width(img_data);
 
             // extract individual glyph images
             const glyph = document.createElement('canvas');
