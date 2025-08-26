@@ -132,7 +132,7 @@ function redraw_sign({layer_background, layer_overlay, center_text, text_tint}) 
         lineCtx.globalCompositeOperation = "source-over";
         // draw line onto output canvas & center if needed
         let line_start = sign_margin;
-        if (center_text && cursor < sign_width - 2*sign_margin) line_start = sign_width/2 - cursor/2;
+        if (center_text && cursor < sign_width - 2*sign_margin) line_start = Math.round(sign_width/2 - cursor/2);
         ctx.drawImage(lineCanvas,
             0, 0, sign_width-sign_margin, sign_height,
             line_start, 0, sign_width-sign_margin, sign_height
