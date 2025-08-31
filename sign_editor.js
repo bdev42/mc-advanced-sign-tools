@@ -21,6 +21,12 @@ const toggleBackground = document.querySelector("input#mse-enable-signbg");
 const toggleOverlay = document.querySelector("input#mse-enable-overlay");
 const toggleCentering = document.querySelector("input#mse-enable-centering");
 
+const overlayLegend = document.querySelector("#overlay-legend");
+
+toggleOverlay.addEventListener("input", () => {
+    overlayLegend.classList.toggle("hidden", !toggleOverlay.checked);
+});
+
 [text, toggleBackground, toggleOverlay, toggleCentering].forEach(el => {
     el.addEventListener("input", run_tool);
 })

@@ -3,6 +3,10 @@
     --mc-brown: #825432;
 }
 
+.hidden {
+    display: none !important;
+}
+
 body {
     image-rendering: pixelated;
     background-color: #402e20;
@@ -12,6 +16,7 @@ body {
     background-attachment: fixed;
     min-height: 100vh;
     margin: 0;
+    font-family: Arial, sans-serif;
 }
 
 main {
