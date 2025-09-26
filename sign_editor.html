@@ -20,7 +20,7 @@
 
         #mse-output {
             display: block;
-            margin: 24px auto;
+            margin: auto;
             width: 384px;
             height: 192px;
             border: 1px solid black;
@@ -31,7 +31,7 @@
             grid-template-columns: repeat(3, 1fr);
             width: 384px;
             padding: 0;
-            margin: 24px auto;
+            margin: auto;
 
             li {
                 display: flex;
@@ -75,22 +75,49 @@
                     <input type="checkbox" id="mse-enable-signbg" checked>
                     <label for="mse-enable-signbg">Sign Background</label>
                 </fieldset>
-
-                <label for="mse-input" class="centered-label">Type the sign content here:</label>
-                <textarea id="mse-input" rows="4" autofocus></textarea>
+                <fieldset>
+                    <legend>Utilities</legend>
+                    <button id="mse-btn-truncate">Cut To Margins</button>
+                    <button id="mse-btn-balance" disabled>Balance Lines</button>
+                    <label for="mse-sel-balance">strategy:</label>
+                    <select id="mse-sel-balance" disabled>
+                        <option value="SO">space only</option>
+                        <option value="SAD">space & dots</option>
+                    </select>
+                </fieldset>
             </form>
 
-            <canvas id="mse-output" width="384" height="192"></canvas>
-            <img id="mse-bg" src="textures/oak_front.png" alt="Sign background texture" style="display: none">
-
-            <ul id="overlay-legend">
-                <li><span class="color-sample" style="background-color: #ff000040"></span><span>margin</span></li>
-                <li><span class="color-sample" style="background-color: #ffffff80"></span><span>baseline</span></li>
-                <li><span class="color-sample" style="background-color: #00ff0020"></span><span>space</span></li>
-                <li><span class="color-sample" style="background-color: #ffff0040"></span><span>gap</span></li>
-                <li><span class="color-sample" style="background-color: #0000ff20"></span><span>ascent</span></li>
-                <li><span class="color-sample" style="background-color: #00ffff20"></span><span>descent</span></li>
-            </ul>
+            <div style="display: grid; grid-template-columns: 3fr 1fr; margin: 24px; row-gap: 24px;">
+                <div>
+                    <label for="mse-input" class="centered-label">Type the sign content here:</label>
+                    <textarea id="mse-input" rows="4" autofocus></textarea>
+                </div>
+                <div class="col"></div>
+                <canvas id="mse-output" width="384" height="192"></canvas>
+                <div class="row">
+                    <div id="mse-line-copy" class="col">
+                        <button>📋1</button>
+                        <button>📋2</button>
+                        <button>📋3</button>
+                        <button>📋4</button>
+                    </div>
+                    <div id="mse-line-length" class="col" style="align-items: end;">
+                        <span>-</span>
+                        <span>-</span>
+                        <span>-</span>
+                        <span>-</span>
+                    </div>
+                </div>
+                <ul id="overlay-legend">
+                    <li><span class="color-sample" style="background-color: #ff000040"></span><span>margin</span></li>
+                    <li><span class="color-sample" style="background-color: #ffffff80"></span><span>baseline</span></li>
+                    <li><span class="color-sample" style="background-color: #00ff0020"></span><span>space</span></li>
+                    <li><span class="color-sample" style="background-color: #ffff0040"></span><span>gap</span></li>
+                    <li><span class="color-sample" style="background-color: #0000ff20"></span><span>ascent</span></li>
+                    <li><span class="color-sample" style="background-color: #00ffff20"></span><span>descent</span></li>
+                </ul>
+            </div>
+            <img id="mse-bg" src="textures/oak_front.png" alt="Sign background texture" style="display: none">            
 
             <script type="module" src="sign_editor.js" defer></script>
         </article>
