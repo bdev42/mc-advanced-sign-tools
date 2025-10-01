@@ -32,6 +32,7 @@ const lineLengthsContainer = document.querySelector("#mse-line-length");
 const btnTruncate = document.querySelector("#mse-btn-truncate");
 const btnBalance = document.querySelector("#mse-btn-balance");
 const selBalance = document.querySelector("#mse-sel-balance");
+const selTextTint = document.querySelector("#mse-sel-texttint");
 
 /**
  * @type number[]
@@ -49,7 +50,7 @@ toggleOverlay.addEventListener("input", () => {
     });
 });
 
-[text, toggleBackground, toggleOverlay, toggleCentering].forEach(el => {
+[text, toggleBackground, toggleOverlay, toggleCentering, selTextTint].forEach(el => {
     el.addEventListener("input", run_tool);
 })
 
@@ -71,7 +72,7 @@ function run_tool() {
         layer_background: toggleBackground.checked,
         layer_overlay: toggleOverlay.checked,
         center_text: toggleCentering.checked,
-        text_tint: "black",
+        text_tint: selTextTint.value,
     });
 
     display_line_lengths(line_lengths);
