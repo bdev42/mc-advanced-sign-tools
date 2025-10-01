@@ -11,8 +11,8 @@ const sign_margin = 3;
 const sign_textarea = sign_width - 2*sign_margin;
 const scalingFactor = 4;
 
-const char_sizes = await load_char_sizes('./out/char_sizes_full.txt');
-const [char_textures, atlas_list] = await load_char_textures_map_and_atlas_list('./font_mappings/default.json');
+const char_sizes = await load_char_sizes("./out/char_sizes_full.txt");
+const [char_textures, atlas_list] = await load_char_textures_map_and_atlas_list("./font_mappings/default.json");
 const atlas_map = await load_atlas_map(atlas_list);
 
 const form = document.querySelector("#tool-mse form");
@@ -31,6 +31,12 @@ const lineLengthsContainer = document.querySelector("#mse-line-length");
 
 const btnTruncate = document.querySelector("#mse-btn-truncate");
 const btnBalance = document.querySelector("#mse-btn-balance");
+const selBalance = document.querySelector("#mse-sel-balance");
+
+/**
+ * @type number[]
+ */
+let line_lengths = [];
 
 toggleOverlay.addEventListener("input", () => {
     overlayLegend.classList.toggle("hidden", !toggleOverlay.checked);
@@ -54,13 +60,13 @@ btnBalance.addEventListener("click", utils_balance);
 /**
  * @type CanvasRenderingContext2D
  */
-const ctx = sign.getContext('2d');
+const ctx = sign.getContext("2d");
 ctx.scale(scalingFactor, scalingFactor);
 ctx.imageSmoothingEnabled = false;
 ctx.lineWidth = 1;
 
 function run_tool() {
-    const line_lengths = redraw_sign({
+    line_lengths = redraw_sign({
         ctx,
         layer_background: toggleBackground.checked,
         layer_overlay: toggleOverlay.checked,
@@ -209,13 +215,7 @@ function utils_truncate() {
             const char = truncated[l][c];
             if (!char_sizes.has(char)) continue;
 
-            const char_size = char_sizes.get(char);
-
-            if (char === " ") {
-                cursor += char_size.width;
-            } else {
-                cursor += char_size.width+1;
-            }
+            cursor += char_sizes.get(char).width + (char === " " ? 0 : 1);
 
             if (cursor > sign_textarea) {
                 truncated[l] = truncated[l].slice(0, c);
@@ -229,5 +229,56 @@ function utils_truncate() {
 }
 
 function utils_balance() {
-    // TODO
+    if (line_lengths.length < 2) return;
+
+    let balanced = get_lines();
+    let target_len = 0;
+    let second_longest_len = 0;
+    for (const len of line_lengths) {
+        if (len > target_len) {
+            second_longest_len = target_len;
+            target_len = len;
+        } else if (len > second_longest_len && len < target_len) {
+            second_longest_len = len;
+        }
+    }
+
+    if (selBalance.value === "SO") {
+        for (const [l, len] of line_lengths.entries()) {
+            const gap = target_len - len;
+            const spaces = Math.floor((gap+1)/4);
+
+            for (let s = 0; s < spaces; s++) {
+                balanced[l].push(" ");
+            }
+        }
+    } else if (selBalance.value === "SAD-a" || selBalance.value === "SAD-b") {
+        const charmap = new Map([
+            [5, "`."],
+            [4, " "],
+            [3, "`"],
+            [2, "."],
+        ])
+
+        if (target_len - second_longest_len == 1) target_len += 2;
+
+        for (const [l, len] of line_lengths.entries()) {
+            const gap = target_len - len;
+            if (gap < 2) continue;
+
+            const spaces = Math.floor((gap - 2) / 4);
+            const remainder = gap - (4 * spaces);
+
+            if (selBalance.value === "SAD-b") balanced[l].push(charmap.get(remainder));
+
+            for (let s = 0; s < spaces; s++) {
+                balanced[l].push(" ");
+            }
+
+            if (selBalance.value === "SAD-a") balanced[l].push(charmap.get(remainder));
+        }
+    }
+
+    set_lines(balanced);
+    run_tool();
 }

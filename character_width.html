@@ -27,7 +27,6 @@
         }
 
         .atlas-override {
-            display: inline-block;
             float: right;
         }
     </style>
@@ -54,6 +53,7 @@
                     <legend>Font Mappings <a href="https://minecraft.wiki/w/Font#Providers" target="_blank">wiki</a></legend>
                     <input type="radio" name="font_mappings" id="fm-default" value="default" checked>
                     <label for="fm-default">Default</label>
+                    <span class="input-divider"></span>
 
                     <input type="radio" name="font_mappings" id="fm-upload" value="upload">
                     <label for="fm-upload">Custom JSON: <input type="file" id="fm-upload-file" accept=".json"></label>
@@ -64,6 +64,7 @@
                     <legend>Space Width</legend>
                     <input type="radio" name="space_width" id="sw-default" value="default" checked>
                     <label for="sw-default">Default</label>
+                    <span class="input-divider"></span>
 
                     <input type="radio" name="space_width" id="sw-custom" value="custom">
                     <label for="sw-custom">Custom <input type="number" id="sw-value" value="4" disabled min="0" step="1"></label>

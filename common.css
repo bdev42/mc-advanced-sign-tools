@@ -110,6 +110,11 @@ a {
     &:hover { opacity: 100%; }
 }
 
+.input-divider {
+    margin: 0 8px;
+    border-left: #ccc solid 1px;
+}
+
 blockquote {
     border-left: 5px solid #888;
     margin-left: 5px;

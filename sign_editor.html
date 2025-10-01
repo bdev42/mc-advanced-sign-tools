@@ -68,22 +68,31 @@
                     <legend>Display Options</legend>
                     <input type="checkbox" id="mse-enable-overlay" checked>
                     <label for="mse-enable-overlay">Show Overlay</label>
+                    <span class="input-divider"></span>
 
                     <input type="checkbox" id="mse-enable-centering">
                     <label for="mse-enable-centering">Center Text</label>
+                    <span class="input-divider"></span>
 
                     <input type="checkbox" id="mse-enable-signbg" checked>
                     <label for="mse-enable-signbg">Sign Background</label>
+                    <span class="input-divider"></span>
+                    
                 </fieldset>
                 <fieldset>
                     <legend>Utilities</legend>
                     <button id="mse-btn-truncate">Cut To Margins</button>
-                    <button id="mse-btn-balance" disabled>Balance Lines</button>
+                    <span class="input-divider"></span>
+
+                    <button id="mse-btn-balance">Balance Used Lines</button>
                     <label for="mse-sel-balance">strategy:</label>
-                    <select id="mse-sel-balance" disabled>
+                    <select id="mse-sel-balance">
+                        <option value="SAD-a">space & dots-after</option>
+                        <option value="SAD-b">space & dots-before</option>
                         <option value="SO">space only</option>
-                        <option value="SAD">space & dots</option>
                     </select>
+                    <span class="input-divider"></span>
+                    
                 </fieldset>
             </form>
 
