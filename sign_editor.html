@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Minecraft Sign Editor</title>
+    <title>Sign Editor - Minecraft Advanced Sign Tools</title>
     <link rel="stylesheet" href="common.css">
     <link rel="icon" type="image/png" href="icon.png">
     <style>
@@ -49,13 +49,18 @@
             }
         }
 
+        main {
+            flex-direction: row;
+        }
+
     </style>
 </head>
 <body>
     <nav>
         <ul>
             <li><a href="./character_width.html" draggable="false">Character Width Calculator</a></li>
-            <li><a href="./sign_editor.html" draggable="false" class="active">Sign Editor</a></li>
+            <li><a href="./sign_editor.html#" draggable="false" class="active" id="nav-mse">Sign Editor</a></li>
+            <li><a href="./sign_editor.html#banner-font-maker" draggable="false" id="nav-mse-bfm">Banner Font Maker</a></li>
         </ul>
     </nav>
     <main>
@@ -148,6 +153,68 @@
             <img id="mse-bg" src="textures/oak_front.png" alt="Sign background texture" style="display: none">            
 
             <script type="module" src="sign_editor.js" defer></script>
+        </article>
+        <article id="tool-bfm" class="hidden" style="align-self: flex-end;">
+            <header>
+                <h1>Banner Font Maker</h1>
+                <p>Create banner fonts by designing characters in the sign editor.</p>
+            </header>
+            <form>
+                <div style="display: grid; grid-template-columns: 100px auto; row-gap: 8px;">
+                    <label for="bfm-font-name">Font Name:</label>
+                    <input type="text" id="bfm-font-name" placeholder="Untitled Banner Font" />
+
+                    <label for="bfm-font-author">Author(s):</label>
+                    <input type="text" id="bfm-font-author" placeholder="Steve, Alex, etc." />
+                </div>
+                <div class="row" style="justify-content: space-between; padding-top: 8px;">
+                    <button>Load Font</button>
+                    <button>Save Font</button>
+                </div>
+                <hr>
+
+                <div class="row">
+                    <div class="col" style="color: green;">
+                        <span>✔</span>
+                        <span>A-Z</span>
+                    </div>
+                    <div class="col" style="color: green;">
+                        <span>✔</span>
+                        <span>a-z</span>
+                    </div>
+                    <div class="col" style="color: green;">
+                        <span>✔</span>
+                        <span>0-9</span>
+                    </div>
+                    <div class="col" style="color: red;">
+                        <span>✘</span>
+                        <span>ASCII</span>
+                    </div>
+                    <div class="col" style="color: green;">
+                        <span>✔</span>
+                        <span>Balanced</span>
+                    </div>
+                    <div class="col" style="color: orange;">
+                        <span>89%</span>
+                        <span>Monospace</span>
+                    </div>
+                </div>
+                <hr>
+
+                <div class="row">
+                    <div class="col" style="width: 100px;">
+                        <button>←</button>
+                        <button>→</button>
+                        <button>-</button>
+                    </div>
+                    <select size="16" style="flex-grow: 1;">
+                        <option>Char | Unicode | W | H | Balanced </option>
+                        <option>+ Add New Character +</option>
+                    </select>
+                </div>
+                <hr>
+            </form>
+            <script type="module" src="banner_font_maker.js" defer></script>
         </article>
     </main>
     <a id="scroll-to-top" href="#">🔝</a>
