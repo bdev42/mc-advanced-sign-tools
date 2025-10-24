@@ -168,48 +168,23 @@
                     <input type="text" id="bfm-font-author" placeholder="Steve, Alex, etc." />
                 </div>
                 <div class="row" style="justify-content: space-between; padding-top: 8px;">
-                    <button>Load Font</button>
-                    <button>Save Font</button>
+                    <button id="bfm-btn-load">Load Font</button>
+                    <button id="bfm-btn-save">Save Font</button>
                 </div>
                 <hr>
 
-                <div class="row">
-                    <div class="col" style="color: green;">
-                        <span>✔</span>
-                        <span>A-Z</span>
-                    </div>
-                    <div class="col" style="color: green;">
-                        <span>✔</span>
-                        <span>a-z</span>
-                    </div>
-                    <div class="col" style="color: green;">
-                        <span>✔</span>
-                        <span>0-9</span>
-                    </div>
-                    <div class="col" style="color: red;">
-                        <span>✘</span>
-                        <span>ASCII</span>
-                    </div>
-                    <div class="col" style="color: green;">
-                        <span>✔</span>
-                        <span>Balanced</span>
-                    </div>
-                    <div class="col" style="color: orange;">
-                        <span>89%</span>
-                        <span>Monospace</span>
-                    </div>
-                </div>
+                <div id="bfm-out-metrics" class="row"></div>
                 <hr>
 
                 <div class="row">
-                    <div class="col" style="width: 100px;">
-                        <button>←</button>
-                        <button>→</button>
-                        <button>-</button>
+                    <div class="col" style="width: 100px; gap: 16px;">
+                        <button id="bfm-btn-left">←</button>
+                        <button id="bfm-btn-right">→</button>
+                        <button id="bfm-btn-remove" style="color: #f00;">⌫</button>
                     </div>
-                    <select size="16" style="flex-grow: 1;">
-                        <option>Char | Unicode | W | H | Balanced </option>
-                        <option>+ Add New Character +</option>
+                    <select id="bfm-sel-char" size="16" style="flex-grow: 1;">
+                        <option>Char | Unicode | W | H | Balanced</option>
+                        <option>Loading...</option>
                     </select>
                 </div>
                 <hr>
