@@ -1,4 +1,4 @@
-import {get_lines, get_line_lengths} from "./sign_editor.js";
+import {get_lines, get_line_lengths, set_lines} from "./sign_editor.js";
 
 const navSignEditor = document.querySelector("#nav-mse");
 const navBannerFontMaker = document.querySelector("#nav-mse-bfm");
@@ -39,7 +39,9 @@ let fontmap = new Map();
 form.onsubmit = (e) => e.preventDefault();
 
 selCharacter.addEventListener("input", run_tool);
+btnLeft.addEventListener("click", font_to_editor);
 btnRight.addEventListener("click", editor_to_font);
+btnRemove.addEventListener("click", remove_character);
 
 function run_tool() {
     update_select_options();
@@ -48,6 +50,12 @@ function run_tool() {
 }
 run_tool();
 
+function font_to_editor() {
+    const char = selCharacter.value;
+    if (!fontmap.has(char)) return;
+
+    set_lines(fontmap.get(char).lines);
+}
 
 function editor_to_font() {
     let char = selCharacter.value;
@@ -74,6 +82,12 @@ function editor_to_font() {
     run_tool();
 }
 
+function remove_character() {
+    if(!fontmap.delete(selCharacter.value)) alert("Deletion failed!");
+    selCharacter.selectedIndex++;
+    run_tool();
+}
+
 
 function update_disabled_buttons() {
     btnLeft.disabled = selCharacter.value === "HEADER" || selCharacter.value === "ADD_NEW";
@@ -87,14 +101,16 @@ function update_select_options() {
     selCharacter.appendChild(create_option("HEADER", "Char | Unicode | W | H | Balanced"));
 
     for (const [char, data] of fontmap.entries()) {
-        selCharacter.appendChild(
-            create_option(char, 
-                ` ${char} | U+${char.codePointAt(0).toString(16).padStart(4, "0")} | ${data.width} | ${data.lines.length} | ${data.unbal ? "✘" : "✔"}`
-            )
-        )
+        const tc = char.padStart(3, "\u00A0").padEnd(5, "\u00A0");
+        const tu = char.codePointAt(0).toString(16).padStart(5, "0");
+        const tw = data.width.toString().padStart(2, "\u00A0").padEnd(3);
+        const th = data.lines.length.toString().padStart(2, "\u00A0").padEnd(3);
+        const tb = (data.unbal ? "✘" : "✔").padStart(5, "\u00A0");
+
+        selCharacter.appendChild(create_option(char, `${tc}| U+${tu} |${tw}|${th}|${tb}`));
     }
 
-    selCharacter.appendChild(create_option("ADD_NEW", "+ Add New Character +"));
+    selCharacter.appendChild(create_option("ADD_NEW", "✚ Add New Character ✚".padStart(27, "\u00A0")));
     selCharacter.value = prevSelection;
 }
 

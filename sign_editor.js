@@ -91,6 +91,7 @@ export function get_lines() {
 
 export function set_lines(lines) {
     text.value = lines.map(l => l.join("")).join("\n");
+    run_tool();
 }
 
 function redraw_sign({ctx, layer_background, layer_overlay, center_text, text_tint}) {
@@ -230,7 +231,6 @@ function utils_truncate() {
     }
 
     set_lines(truncated);
-    run_tool();
 }
 
 function utils_balance() {
@@ -285,5 +285,4 @@ function utils_balance() {
     }
 
     set_lines(balanced);
-    run_tool();
 }
