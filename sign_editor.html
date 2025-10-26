@@ -53,6 +53,20 @@
             flex-direction: row;
         }
 
+        #bfm-buttons {
+            width: 100px; 
+            gap: 16px; 
+            & > button {
+                font-size: 1.2em;
+                width: 50px;
+            }
+        }
+
+        #bfm-sel-char {
+            flex-grow: 1; 
+            font-family: monospace;
+        }
+
     </style>
 </head>
 <body>
@@ -67,7 +81,7 @@
         <article id="tool-mse">
             <header>
                 <h1>Minecraft Sign Editor</h1>
-                <p>A pixel accurate sign editor for minecraft, intended for ascii art.</p>
+                <p>A pixel-accurate sign editor for Minecraft, intended for ASCII art.</p>
             </header>
             <form>
                 <fieldset>
@@ -177,12 +191,12 @@
                 <hr>
 
                 <div class="row">
-                    <div class="col" style="width: 100px; gap: 16px;">
-                        <button id="bfm-btn-left">←</button>
-                        <button id="bfm-btn-right">→</button>
+                    <div id="bfm-buttons" class="col">
+                        <button id="bfm-btn-left">🡸</button>
+                        <button id="bfm-btn-right">🡺</button>
                         <button id="bfm-btn-remove" style="color: #f00;">⌫</button>
                     </div>
-                    <select id="bfm-sel-char" size="16" style="flex-grow: 1; font-family: monospace;">
+                    <select id="bfm-sel-char" size="16">
                         <option>Char | Unicode | W | H | Balanced</option>
                         <option>Loading...</option>
                     </select>

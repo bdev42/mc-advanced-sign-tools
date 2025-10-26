@@ -1,3 +1,4 @@
+import { download_file } from "./common.js";
 import {get_lines, get_line_lengths, set_lines} from "./sign_editor.js";
 
 const navSignEditor = document.querySelector("#nav-mse");
@@ -21,6 +22,8 @@ check_tool_active();
 
 
 const form = document.querySelector("#tool-bfm form");
+const fontName = document.querySelector("input#bfm-font-name");
+const fontAuthor = document.querySelector("input#bfm-font-author");
 const btnLoad = document.querySelector("#bfm-btn-load");
 const btnSave = document.querySelector("#bfm-btn-save");
 
@@ -31,6 +34,10 @@ const btnRight = document.querySelector("#bfm-btn-right");
 const btnRemove = document.querySelector("#bfm-btn-remove");
 const selCharacter = document.querySelector("select#bfm-sel-char");
 
+/**
+ * @type {Map<string, number>}
+ */
+let fontmetrics = new Map();
 /**
  * @type {Map<string, {lines: string[], width: number, unbal: boolean}}
  */
@@ -43,12 +50,53 @@ btnLeft.addEventListener("click", font_to_editor);
 btnRight.addEventListener("click", editor_to_font);
 btnRemove.addEventListener("click", remove_character);
 
+btnSave.addEventListener("click", export_font);
+
+
 function run_tool() {
     update_select_options();
     update_metrics();
     update_disabled_buttons();
 }
 run_tool();
+
+function export_font() {
+    run_tool();
+    if (fontmap.size < 1) {
+        alert("There are no characters to export!");
+        return;
+    }
+
+    let content = "MAST1\n";
+    content += fontName.value + "\n";
+    content += fontAuthor.value + "\n";
+    // tags
+    if (fontmetrics.get("Balanced") !== 1) content += "UNBAL ";
+    if (fontmetrics.get("Monospace") === 1) content += "MONO ";
+    if (fontmetrics.get("ASCII") === 1) content += "ASCII ";
+    content += "\n";
+
+    const fontMaxLines = Math.max(...Array.from(fontmap.values()).map(fontData => fontData.lines.length));
+    content += fontMaxLines + " " + fontmap.size + "\n";
+
+    for (const [char, data] of fontmap.entries()) {
+        content += char + " " + data.width;
+        if (data.lines.length < fontMaxLines) {
+            content += " l" + data.lines.length;
+            console.log(data.lines.length, fontMaxLines);
+        }
+        if (data.unbal) content += " ub";
+        content += "\n";
+
+        for (let l = 0; l < fontMaxLines; l++) {
+            if (l < data.lines.length) content += data.lines[l].join("");
+            content += "\n";
+        }
+    }
+
+    const filename = (fontName.value || fontName.placeholder).toLowerCase().replaceAll(" ", "_") + ".mast";
+    download_file(content, filename);
+}
 
 function font_to_editor() {
     const char = selCharacter.value;
@@ -148,7 +196,17 @@ function update_metrics() {
         return 1;
     }));
 
-    metricsContainer.appendChild(create_metric("Monospace", () => undefined));
+    metricsContainer.appendChild(create_metric("Monospace", () => {
+        if (fontmap.size < 1) return undefined;
+        if (fontmetrics.get("Balanced") !== 1) return 0;
+
+        const firstWidth = fontmap.values().next().value.width;
+        if (Array.from(fontmap.values()).some(fontData => fontData.width !== firstWidth)) {
+            return 0;
+        }
+
+        return 1;
+    }));
 }
 
 /**
@@ -160,6 +218,7 @@ function update_metrics() {
  */
 function create_metric(name, evaluator, nearpass_threshold = 0.8) {
     const score = evaluator();
+    fontmetrics.set(name, score);
     const metric = document.createElement("div");
     metric.classList.add("col");
 
