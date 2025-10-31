@@ -1,4 +1,4 @@
-import { download_file } from "./common.js";
+import { download_file, read_file_text, upload_file_dialog } from "./common.js";
 import {get_lines, get_line_lengths, set_lines} from "./sign_editor.js";
 
 const navSignEditor = document.querySelector("#nav-mse");
@@ -6,10 +6,10 @@ const navBannerFontMaker = document.querySelector("#nav-mse-bfm");
 const toolContainer = document.querySelector("#tool-bfm");
 
 window.addEventListener("hashchange", check_tool_active);
-// window.addEventListener("beforeunload", (e) => {
-//     e.preventDefault();
-//     return "";
-// });
+window.addEventListener("beforeunload", (e) => {
+    e.preventDefault();
+    return "";
+});
 
 function check_tool_active() {
     const bfm = location.hash === "#banner-font-maker";
@@ -50,6 +50,7 @@ btnLeft.addEventListener("click", font_to_editor);
 btnRight.addEventListener("click", editor_to_font);
 btnRemove.addEventListener("click", remove_character);
 
+btnLoad.addEventListener("click", import_font);
 btnSave.addEventListener("click", export_font);
 
 
@@ -59,6 +60,49 @@ function run_tool() {
     update_disabled_buttons();
 }
 run_tool();
+
+async function import_font() {
+    if (fontmap.size > 0) {
+        if (!window.confirm("Warning: Any existing characters also mapped by the imported font will be overwritten!")) return;
+    }
+
+    const importFile = await upload_file_dialog(".mast,text/plain");
+    if (!importFile) return;
+
+    const importContent = await read_file_text(importFile);
+    const importLines = importContent.split("\n");
+    if (importLines.length < 6 || importLines[0] !== "MAST1") {
+        alert("Unsupported format!");
+        return;
+    }
+
+    fontName.value = importLines[1];
+    fontAuthor.value = importLines[2];
+    const fontTags = importLines[3].split(" ");
+
+    const [fontMaxLinesPerCharacter, fontNumCharacters] = importLines[4].split(" ").map(n => +n);
+
+    for (let l = 5; l < importLines.length - 1 && (l-5)/(fontMaxLinesPerCharacter+1) < fontNumCharacters; l += fontMaxLinesPerCharacter+1) {
+        const [char, width, ...rest] = importLines[l].split(" ");
+        let usedLines = fontMaxLinesPerCharacter;
+        let unbal = false;
+        for(const tag of rest) {
+            if (tag.startsWith("l")) {
+                usedLines = +tag.replace("l", "");
+            } else if (tag === "ub") {
+                unbal = true;
+            }
+        }
+
+        fontmap.set(char, {
+            lines: importLines.slice(l+1, l+usedLines+1).map(l => [...l]),
+            width,
+            unbal,
+        })
+    }
+
+    run_tool();
+}
 
 function export_font() {
     run_tool();
