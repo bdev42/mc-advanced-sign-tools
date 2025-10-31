@@ -124,7 +124,6 @@ export async function load_char_textures_map_and_atlas_list(url) {
                     atlas: bitmap.file,
                     cx: cx,
                     cy: cy,
-                    cache: undefined
                 })
             }
         }
@@ -159,4 +158,61 @@ export async function load_atlas_map(atlases) {
         });
     }
     return atlas_map;
+}
+
+export function download_file(content, filename, mimeType = "text/plain") {
+    const blob = new Blob([content], { type: mimeType });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+}
+
+/**
+ * @param {string} accept 
+ * @returns {Promise<File | null>} file
+ */
+export async function upload_file_dialog(accept = ".txt,text/plain") {
+    return new Promise((resolve) => {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = accept;
+        input.style.display = "none";
+        document.body.appendChild(input);
+
+        input.addEventListener("change", () => {
+            document.body.removeChild(input);
+            resolve(input.files[0]);
+        });
+        input.addEventListener("cancel", () => {
+            document.body.removeChild(input);
+            resolve(null);
+        });
+        input.addEventListener("submit", (e) => e.preventDefault())
+
+        input.click();
+    });
+}
+
+/**
+ * @param {File} file 
+ * @returns {Promise<string>} content
+ */
+export async function read_file_text(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            resolve(event.target.result);
+        };
+        reader.onerror = (error) => {
+            reject(error);
+        };
+
+        reader.readAsText(file);
+    });
 }

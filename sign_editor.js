@@ -79,14 +79,19 @@ function run_tool() {
 }
 run_tool();
 
-function get_lines() {
+export function get_line_lengths() {
+    return line_lengths;
+}
+
+export function get_lines() {
     const lines = [];
     for (const line of text.value.split("\n")) lines.push([...line]);
     return lines;
 }
 
-function set_lines(lines) {
+export function set_lines(lines) {
     text.value = lines.map(l => l.join("")).join("\n");
+    run_tool();
 }
 
 function redraw_sign({ctx, layer_background, layer_overlay, center_text, text_tint}) {
@@ -226,7 +231,6 @@ function utils_truncate() {
     }
 
     set_lines(truncated);
-    run_tool();
 }
 
 function utils_balance() {
@@ -281,5 +285,4 @@ function utils_balance() {
     }
 
     set_lines(balanced);
-    run_tool();
 }
