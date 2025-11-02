@@ -1,6 +1,6 @@
 import {extract_bitmaps_from_font_mappings, fb_span, load_json} from "./common.js";
 
-const fm_default = await load_json('./font_mappings/default.json');
+const fm_default = await load_json("./external/font_mappings/default.json");
 let fm_file_content = null;
 
 /** @type {(BitmapProvider[])} */
@@ -41,7 +41,7 @@ function process_inputs() {
     try {
         if (font_mappings === "default") {
             if (!fm_default) {
-                fm_fb.replaceChildren(fb_span('Loading data... please wait.', false));
+                fm_fb.replaceChildren(fb_span("Loading data... please wait.", false));
                 return;
             }
             fm_parsed = fm_default;
@@ -100,7 +100,7 @@ function redraw_bitmaps_list() {
         s.appendChild(ao);
 
         const i = document.createElement("img");
-        i.src = "textures/" + bitmap.file;
+        i.src = "external/textures/" + bitmap.file;
         const t = document.createElement("table");
         const p = document.createElement("progress");
         d.append(s, i, t, p);
@@ -128,7 +128,7 @@ function atlas_override(bitmap, parent_details) {
     ao_checkbox.addEventListener("change", () => {
         const img = parent_details.querySelector("img");
 
-        img.src = "textures/" + bitmap.file;
+        img.src = "external/textures/" + bitmap.file;
         if (ao_checkbox.checked) {
             if (!ao_file.files.length) return;
             img.src = URL.createObjectURL(ao_file.files[0]);
@@ -173,8 +173,8 @@ async function process_bitmap(toggle_event, bitmap) {
     progress.value = 0;
 
     // Setup atlas on canvas for analysis
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d', {willReadFrequently: true});
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d", {willReadFrequently: true});
     canvas.width = img.width;
     canvas.height = img.height;
     ctx.drawImage(img, 0, 0);
@@ -195,10 +195,10 @@ async function process_bitmap(toggle_event, bitmap) {
             const real_char_width = char === " " ? sw_value.value : analyze_character_width(img_data);
 
             // extract individual glyph images
-            const glyph = document.createElement('canvas');
+            const glyph = document.createElement("canvas");
             glyph.width = real_char_width;
             glyph.height = img_data.height;
-            glyph.getContext('2d').putImageData(img_data, 0, 0);
+            glyph.getContext("2d").putImageData(img_data, 0, 0);
 
             // display result
             outputMap.set(char, {width: real_char_width, height: bitmap.height ?? 8, ascent: bitmap.ascent});
