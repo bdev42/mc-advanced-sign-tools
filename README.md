@@ -25,7 +25,7 @@ Community contributions are welcome and appreciated! Please continue reading to 
 
 ---
 Smaller contributions like bug fixes, improving the documentation, or adding helpful code comments are always welcome!
-If you’re considering a larger contribution (like adding a new feature or improving an existing one), please open an issue to discuss the idea beforehand. This helps ensure alignment with the project's direction.
+If you are considering a larger contribution (like adding a new feature or improving an existing one), please open an issue to discuss the idea beforehand. This helps ensure alignment with the project's direction.
 
 _As always, please understand that some contributions may not get merged. This isn't a reflection of your skills or the quality of your code, but simply how well it fits the project._
 
