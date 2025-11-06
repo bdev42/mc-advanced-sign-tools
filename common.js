@@ -150,7 +150,7 @@ export async function load_atlas_map(atlases) {
     const atlas_map = new Map();
 
     for (const atlas of atlases) {
-        const img = await load_image('textures/' + atlas.name);
+        const img = await load_image("external/textures/" + atlas.name);
         atlas_map.set(atlas.name, {
             texture: img,
             width: atlas.width,

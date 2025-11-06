@@ -11,8 +11,8 @@ const sign_margin = 3;
 const sign_textarea = sign_width - 2*sign_margin;
 const scalingFactor = 4;
 
-const char_sizes = await load_char_sizes("./out/char_sizes_full.txt");
-const [char_textures, atlas_list] = await load_char_textures_map_and_atlas_list("./font_mappings/default.json");
+const char_sizes = await load_char_sizes("./char_sizes/full.txt");
+const [char_textures, atlas_list] = await load_char_textures_map_and_atlas_list("./external/font_mappings/default.json");
 const atlas_map = await load_atlas_map(atlas_list);
 
 const form = document.querySelector("#tool-mse form");
@@ -116,7 +116,7 @@ function redraw_sign({ctx, layer_background, layer_overlay, center_text, text_ti
     for (let l = 0; l < lines.length; l++) {
         const baseline = 1 + (l+1) * 10;
         const lineCanvas = new OffscreenCanvas(sign_width-sign_margin, sign_height);
-        const lineCtx = lineCanvas.getContext('2d');
+        const lineCtx = lineCanvas.getContext("2d");
         lineCtx.imageSmoothingEnabled = false;
         let lineOverlayCanvas, lineOverlayCtx;
         if (layer_overlay) {
@@ -125,7 +125,7 @@ function redraw_sign({ctx, layer_background, layer_overlay, center_text, text_ti
             ctx.fillRect(0, baseline, sign_margin+2, 1);
             ctx.fillRect(sign_width-(sign_margin+2), baseline, sign_margin+2, 1);
             lineOverlayCanvas = new OffscreenCanvas(lineCanvas.width, lineCanvas.height);
-            lineOverlayCtx = lineOverlayCanvas.getContext('2d');
+            lineOverlayCtx = lineOverlayCanvas.getContext("2d");
         }
 
         let cursor = 0;

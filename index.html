@@ -5,10 +5,22 @@
     <title>Minecraft Advanced Sign Tools</title>
     <link rel="stylesheet" href="common.css">
     <link rel="icon" type="image/png" href="icon.png">
+    <style>
+        main {gap: 0;}
+        section {
+            color: white;
+            max-width: 900px;
+            padding-top: 64px;
+        }
+        img {
+            border-radius: 10px;
+        }
+    </style>
 </head>
 <body>
     <nav>
         <ul>
+            <li><a href="/" draggable="false" class="active">Home</a></li>
             <li><a href="./character_width.html" draggable="false">Character Width Calculator</a></li>
             <li><a href="./sign_editor.html#" draggable="false">Sign Editor</a></li>
             <li><a href="./sign_editor.html#banner-font-maker" draggable="false">Banner Font Maker</a></li>
@@ -17,8 +29,77 @@
     <main>
         <header style="color: white; text-align: center">
             <h1>Welcome to MAST!</h1>
-            <h2>More advanced tools for minecraft signs.</h2>
+            <a href="https://github.com/bdev42/mc-advanced-sign-tools?tab=readme-ov-file#minecraft-advanced-sign-tools"><img src="docs/github-icon.svg" alt="GitHub Repository" width="64" height="64"></a>
         </header>
+        <section id="mse">
+            <h2>Minecraft Sign Editor</h2>
+            <p>This tool is meant to help you make ASCII art for Minecraft signs,
+                unlike other tools it is designed to perfectly match in-game signs
+                with pixel-perfect accuracy.
+            </p>
+            <b>Why is this tool useful?</b>
+            <p>ASCII art is typically made with <i>monospace fonts (= all characters take up the same width)</i>,
+                which makes it both considerably easier to create
+                and to be reused in any other monospace font without looking
+                completely messed up. Unlucky for us, <i>Mojangles (= the minecraft font)</i>,
+                is not monospace, which means we have to keep in mind the width of
+                each character when making ASCII art, this is the primary use for this tool.
+            </p>
+            <hr>
+
+            <h3 id="mse-quick-overview">Quick Overview</h3>
+            <img src="docs/mse/overview.png">
+            <ul>
+                <li>To get started, simply start typing into the multi-line <span style="color: #00FF21;">text input</span>, which is located above the sign display (or canvas). </li>
+                <li>The buttons next to the canvas let you <span style="color: #FFD800;">copy the text line-by-line</span> so you can easily paste it to an in-game sign. </li>
+                <li>Next to it you find the <span style="color: #FF0000;">line width counter</span>, which displays the number of pixels the line currently takes up. It also warns you when a line is over the 90 pixel limit. <i>A dash (-) indicates an unused line, which is not the same as an empty one.</i></li>
+                <li>There are numerous additional controls in the <span style="color: #0094FF;">dashboards at the top</span>, you can learn more about them below.</li>
+            </ul>
+            <hr>
+
+            <h3 id="mse-display-options">Display Options</h3>
+            <img src="docs/mse/display_options.png" alt="the display options dashboard">
+            <p>To preview how exactly your design will look in-game disable "Show Overlay", 
+                enable "Center Text" and "Sign Background", finally choose the appropriate dye color (if applicable).
+            </p>
+            <h4>Show Overlay</h4>
+            <p>On by default, the overlay helps you easily determine how much space each character uses, 
+                which is very helpful for ASCII art. When enabled, a color legend will be shown below the sign display:
+            </p>
+            <img src="docs/mse/overlay_color_legend.png" alt="overlay color legend; red = margin, white = baseline, green = space, 
+            yellow = gap, blue = ascent, cyan = descent">
+            <h4>Center Text</h4>
+            <p>Disabled by default for easier editing, enable it to match the in-game behavior. Note how a fully filled 
+                line (90/90 pixels) looks the same as if it wasn't centered, this technique lets you more easily control 
+                the position of each character in that line.</p>
+            <h4>Sign Background</h4>
+            <p>On by default, toggles the rendering of the oak sign texture. When disabled, the background is transparent,
+                most browsers let you right-click the sign display (canvas) and copy or <b>save the image as a transparent PNG</b>.
+            </p>
+            <hr>
+
+            <h3 id="mse-utilities">Utilities</h3>
+            <h4>Cut To Margins</h4>
+            <p>Press this to quickly cut the text to the margins of a sign, i.e. 90 pixels wide and 4 lines long at the most.</p>
+            <h4>Balance Used Lines</h4>
+            <p>Press this to try and <i>balance the text (= make all lines the same width as the longest)</i> using the <b>selected strategy</b>.</p>
+            <h5>space only</h5>
+            <p>This strategy is limited to the space character, which means it can only increase lines by an increment of 4 pixels,
+                as such it cannot always achieve fully balanced lines, it gets you close and then you can fix it the way you want from there.
+            </p>
+            <h5>space & dots (before / after)</h5>
+            <p>This more advanced strategy can almost always achieve perfect balance, with the main downside being possibly adding 
+                visible characters. It uses the dot (.) and backtick (`) characters in addition to space, which enable 2 and 3 pixel 
+                wide increments as well. The two variants change whether the visible characters (dots) are put <b>before or after</b> the space.
+            </p>
+            <i>In some circumstances it might increase the width of the longest line as well and balance
+                to the new length, such as when there is a single pixel difference between the longest and second longest line. This is because 
+                there is no way to add a single pixel width to a line, as even the 1 wide characters add one more pixel for the gap after them.
+            </i>
+            <hr>
+
+        </section>
     </main>
+    <a id="scroll-to-top" href="#">🔝</a>
 </body>
 </html>
