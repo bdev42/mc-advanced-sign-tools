@@ -74,8 +74,8 @@
         <ul>
             <li><a href="./" draggable="false">Home</a></li>
             <li><a href="./character_width.html" draggable="false">Character Width Calculator</a></li>
-            <li><a href="./sign_editor.html#" draggable="false" class="active" id="nav-mse">Sign Editor</a></li>
-            <li><a href="./sign_editor.html#banner-font-maker" draggable="false" id="nav-mse-bfm">Banner Font Maker</a></li>
+            <li><a href="./sign_editor.html#" draggable="false" class="active" id="nav-mse" onclick="window.location.hash = '#'; return false;">Sign Editor</a></li>
+            <li><a href="./sign_editor.html#banner-font-maker" draggable="false" id="nav-mse-bfm" onclick="window.location.hash = '#banner-font-maker'; return false;">Banner Font Maker</a></li>
         </ul>
     </nav>
     <main>
@@ -165,6 +165,8 @@
                     <li><span class="color-sample" style="background-color: #00ffff20"></span><span>descent</span></li>
                 </ul>
             </div>
+            <p id="mse-fsw-to-classic" class="hidden">Playing pre-1.13? Switch to the <a href="?fv=classic" onclick="window.location.search = '?fv=classic'; return false;">classic font</a>.</p>
+            <p id="mse-fsw-to-default" class="hidden">You are currently using the classic font. <a href="?fv=latest" onclick="window.location.search = '?fv=latest'; return false;">switch to modern</a></p>
             <img id="mse-bg" src="external/textures/oak_front.png" alt="Sign background texture" style="display: none">            
 
             <script type="module" src="sign_editor.js" defer></script>

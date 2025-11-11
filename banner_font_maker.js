@@ -7,6 +7,7 @@ const toolContainer = document.querySelector("#tool-bfm");
 
 window.addEventListener("hashchange", check_tool_active);
 window.addEventListener("beforeunload", (e) => {
+    if(get_lines().map(l => l.join("")).join("").length < 1) return;
     e.preventDefault();
     return "";
 });

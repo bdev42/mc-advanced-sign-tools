@@ -1,6 +1,7 @@
 import {extract_bitmaps_from_font_mappings, fb_span, load_json} from "./common.js";
 
 const fm_default = await load_json("./external/font_mappings/default.json");
+const fm_classic = await load_json("./external/font_mappings/old.json");
 let fm_file_content = null;
 
 /** @type {(BitmapProvider[])} */
@@ -45,6 +46,12 @@ function process_inputs() {
                 return;
             }
             fm_parsed = fm_default;
+        } else if (font_mappings === "classic") {
+            if (!fm_classic) {
+                fm_fb.replaceChildren(fb_span("Loading data... please wait.", false));
+                return;
+            }
+            fm_parsed = fm_classic;
         } else if (font_mappings === "upload" && fm_file_content) {
             fm_parsed = JSON.parse(fm_file_content);
         }

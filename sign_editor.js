@@ -11,9 +11,12 @@ const sign_margin = 3;
 const sign_textarea = sign_width - 2*sign_margin;
 const scalingFactor = 4;
 
-const char_sizes = await load_char_sizes("./char_sizes/full.txt");
-const [char_textures, atlas_list] = await load_char_textures_map_and_atlas_list("./external/font_mappings/default.json");
+const font_version = (new Map([["classic", "old"], ["old", "old"]])).get((new URLSearchParams(window.location.search)).get("fv")) || "default";
+const char_sizes = await load_char_sizes("./char_sizes/" + font_version + ".txt");
+const [char_textures, atlas_list] = await load_char_textures_map_and_atlas_list("./external/font_mappings/" + font_version + ".json");
 const atlas_map = await load_atlas_map(atlas_list);
+document.querySelector("#mse-fsw-to-default").classList.toggle("hidden", font_version === "default");
+document.querySelector("#mse-fsw-to-classic").classList.toggle("hidden", font_version === "old");
 
 const form = document.querySelector("#tool-mse form");
 const text = document.querySelector("textarea#mse-input");
