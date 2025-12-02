@@ -12,6 +12,11 @@
             max-width: 900px;
             padding-top: 64px;
         }
+        td {
+            color: initial;
+            padding: 0 8px;
+            text-align: left;
+        }
         img {
             border-radius: 10px;
         }
@@ -98,6 +103,62 @@
             </i>
             <hr>
 
+        </section>
+
+        <section id="bfm">
+            <h2>Banner Font Maker</h2>
+            <hr>
+
+            <h3>File Format</h3>
+            <p>The banner font format (.mast) is a custom text-based file format intended to store custom ascii-art designs for different 
+                characters and all related metadata. The specifications are the following:
+            </p>
+            <p>A banner font file <b>always begins with a header section</b>, each field separated by a newline (\n):</p>
+            <table>
+                <tr><th>Header Section</th><th>details</th></tr>
+                <tr><td>Format / Version Identifier</td><td>The string literal "MAST1", used to check for compatibility.</td></tr>
+                <tr><td>Font Name</td><td>This field contains the name for the font given by the user.</td></tr>
+                <tr><td>Font Author(s)</td><td>The author field filled in by the user, encouraged to be comma-separated for multiple authors.</td></tr>
+                <tr><td>Font Tags</td><td>A space-separated list of metadata tags about the font.</td></tr>
+                <tr><td>Size Info</td><td>"Max Lines" and "# of Characters" fields as decimal strings. See below.</td></tr>
+            </table>
+            <table>
+                <tr><th>Font Tag</th><th>meaning</th></tr>
+                <tr><td>UNBAL</td><td>This tag warns that the font is not balanced and might be difficult to work with.</td></tr>
+                <tr><td>MONO</td><td>Denotes that all characters of this font have the same size, ie. the font is monospace.</td></tr>
+                <tr><td>ASCII</td><td>The font maps all printable characters of the 7-bit ASCII table (from ! to ~).</td></tr>
+                <tr><td>FV_OLD</td><td>The font was designed with the old/classic font version (pre-1.13).</td></tr>
+            </table>
+            <table>
+                <tr><th>Size Info</th><th>details</th></tr>
+                <tr><td>Max Lines</td><td>The most number of lines used by the "tallest" character in this font.</td></tr>
+                <tr><td>&lt;SPACE&gt;</td><td>A single space for separating the two fields.</td></tr>
+                <tr><td># of Characters</td><td>The number of characters that are mapped by this font in total.</td></tr>
+            </table>
+            <p>After the header, there is <b>n (= "# of Characters")</b> number of consecutive character mapping sections:</p>
+            <table>
+                <tr><th>Character Mapping</th><th>details</th></tr>
+                <tr><td>Char</td><td>The actual character this design is mapped to.</td></tr>
+                <tr><td>&lt;SPACE&gt;</td><td>A single separating space.</td></tr>
+                <tr><td>Width</td><td>The (max) width of the character design in pixels.</td></tr>
+            </table>
+            <p>In the event the <b>height (number of lines)</b> of the design differs from <b>"Max Lines"</b>, the following segment is also inserted:</p>
+            <table>
+                <tr><td>&lt;SPACE&gt;</td><td>A single separating space.</td></tr>
+                <tr><td>&lt;l&gt;</td><td>The literal character "l" for indicating "lines".</td></tr>
+                <tr><td>Lines Override</td><td>The actual number of lines for this character (overriding "Max Lines").</td></tr>
+            </table>
+            <p>In the event the character is unbalanced, the following segment may also be appended:</p>
+            <table>
+                <tr><td>&lt;SPACE&gt;</td><td>A single separating space.</td></tr>
+                <tr><td>&lt;ub&gt;</td><td>The literal string "ub", indicating "unbalanced".</td></tr>
+            </table>
+            <p>Finally, the actual character design is inserted:</p>
+            <table>
+                <tr><td>&lt;NEWLINE&gt;</td><td>A single separating newline (\n).</td></tr>
+                <tr><td>Design</td><td>The actual design, taking up "Max Lines" number of lines unless "Lines Override" specifies otherwise.</td></tr>
+            </table>
+            <hr>
         </section>
     </main>
     <a id="scroll-to-top" href="#">🔝</a>

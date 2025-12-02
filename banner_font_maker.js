@@ -132,7 +132,6 @@ function export_font() {
         content += char + " " + data.width;
         if (data.lines.length < fontMaxLines) {
             content += " l" + data.lines.length;
-            console.log(data.lines.length, fontMaxLines);
         }
         if (data.unbal) content += " ub";
         content += "\n";

@@ -51,7 +51,7 @@ toggleOverlay.addEventListener("input", () => {
         const line = text.value.split("\n")[idx];
         if (line) navigator.clipboard.writeText(line);
 
-        if (font_version === "old") {
+        if (font_version === "old" && line) {
             const lineChars = [...line];
             let typeAssist = `For line ${idx+1} type: \n\n`;
             for (let i = 0; i < lineChars.length; i++) {

@@ -151,6 +151,10 @@ table {
         background-color: var(--mc-green);
         color: #eee;
     }
+
+    & + table {
+        margin-top: 8px;
+    }
 }
 
 progress {
