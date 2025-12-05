@@ -52,7 +52,7 @@
             </p>
             <hr>
 
-            <h3 id="mse-quick-overview">Quick Overview</h3>
+            <h3 id="mse-overview">Overview</h3>
             <img src="docs/mse/overview.png">
             <ul>
                 <li>To get started, simply start typing into the multi-line <span style="color: #00FF21;">text input</span>, which is located above the sign display (or canvas). </li>
@@ -107,9 +107,34 @@
 
         <section id="bfm">
             <h2>Banner Font Maker</h2>
+            <p>This tool works alongside the <i>Sign Editor</i>, and lets you create custom fonts intended for the <i>Banner Text Editor (WIP)</i>.</p>
+
+            <h3 id="bfm-overview">Overview</h3>
+            <img src="docs/bfm/overview.png">
+            <ul>
+                <li>The <span style="color: #0094FF;">controls at the top</span> let you name your font and list the authors, while the buttons allow you to save to- or restore your work from a file.</li>
+                <li>Next, the <span style="color: #FFD800;">font metrics panel</span> measures some aspects of your banner font, such as how much of different character ranges are supported, or whether or not the font is balanced and/or monospace. 
+                <i>While these metrics are mostly for the sake of completeness and not necessary for a good font, it is generally recommended to make your fonts balanced.</i></li>
+                <li>The <span style="color: #FF0000;">character list</span> provides an overview of all characters in your font, including their size and a column for quickly spotting unbalanced designs.</li>
+                <li>Finally, the <span style="color: #00FF21;">transfer buttons</span> are your way to move designs back and forth between the <i>Sign Editor</i> and the <i>character list</i>; add, remove or overwrite them.</li>
+            </ul>
             <hr>
 
-            <h3>File Format</h3>
+            <h3 id="bfm-controls">Controls</h3>
+            <h4>Left Arrow Button (🡸)</h4>
+            <p>Moves the current design for <b>the currently selected character</b> in the character list into the <i>Sign Editor</i>, allowing you to edit or review existing designs.</p>
+            <h4>Right Arrow Button (🡺)</h4>
+            <p>When you want <b>to save a character design</b> in the <i>Sign Editor</i>, this button lets you either:
+                <ul>
+                    <li><b>Add a new character</b> to the font, for this simply have the corresponding option selected at the bottom of the <i>character list</i>. <i>You will be prompted to enter the desired character.</i></li>
+                    <li><b>Overwrite the design for an existing character</b>, simply select the character to write the new design to from the <i>character list</i>.</li>
+                </ul>
+            </p>
+            <h4>Discard Button (⌫)</h4>
+            <p>This will <b>remove the selected character</b> from the font. <i>Be careful, the design will be lost!</i></p>
+            <hr>
+
+            <h3 id="bfm-file-format">File Format</h3>
             <p>The banner font format (.mast) is a custom text-based file format intended to store custom ascii-art designs for different 
                 characters and all related metadata. The specifications are the following:
             </p>
