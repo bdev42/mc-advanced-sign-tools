@@ -1,5 +1,5 @@
 import { download_file, read_file_text, upload_file_dialog } from "./common.js";
-import {get_lines, get_line_lengths, set_lines} from "./sign_editor.js";
+import {get_lines, get_line_lengths, set_lines, get_font_version} from "./sign_editor.js";
 
 const navSignEditor = document.querySelector("#nav-mse");
 const navBannerFontMaker = document.querySelector("#nav-mse-bfm");
@@ -80,6 +80,9 @@ async function import_font() {
     fontName.value = importLines[1];
     fontAuthor.value = importLines[2];
     const fontTags = importLines[3].split(" ");
+    if (fontTags.includes("FV_OLD") !== (get_font_version() === "old")) {
+        alert("Warning: The current font version does not seem to match what the banner font was exported with, and might not work as intended by the font author. Check all glyphs to ensure compatibility!")
+    }
 
     const [fontMaxLinesPerCharacter, fontNumCharacters] = importLines[4].split(" ").map(n => +n);
 
@@ -119,6 +122,7 @@ function export_font() {
     if (fontmetrics.get("Balanced") !== 1) content += "UNBAL ";
     if (fontmetrics.get("Monospace") === 1) content += "MONO ";
     if (fontmetrics.get("ASCII") === 1) content += "ASCII ";
+    if (get_font_version() === "old") content += "FV_OLD ";
     content += "\n";
 
     const fontMaxLines = Math.max(...Array.from(fontmap.values()).map(fontData => fontData.lines.length));
@@ -128,7 +132,6 @@ function export_font() {
         content += char + " " + data.width;
         if (data.lines.length < fontMaxLines) {
             content += " l" + data.lines.length;
-            console.log(data.lines.length, fontMaxLines);
         }
         if (data.unbal) content += " ub";
         content += "\n";

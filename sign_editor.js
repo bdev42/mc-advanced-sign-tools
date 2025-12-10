@@ -49,7 +49,21 @@ toggleOverlay.addEventListener("input", () => {
 [...lineCopyContainer.children].forEach((btn, idx) => {
     btn.addEventListener("click", () => {
         const line = text.value.split("\n")[idx];
-        if(line) navigator.clipboard.writeText(line);
+        if (line) navigator.clipboard.writeText(line);
+
+        if (font_version === "old" && line) {
+            const lineChars = [...line];
+            let typeAssist = `For line ${idx+1} type: \n\n`;
+            for (let i = 0; i < lineChars.length; i++) {
+                let count = 1;
+                while (i < lineChars.length - 1 && lineChars[i] == lineChars[i+1]) {
+                    count++;
+                    i++;
+                }
+                typeAssist += `${count} times: ${lineChars[i] === " " ? "SPACE" : lineChars[i]}\n`;
+            }
+            alert(typeAssist);
+        }
     });
 });
 
@@ -81,6 +95,10 @@ function run_tool() {
     display_line_lengths(line_lengths);
 }
 run_tool();
+
+export function get_font_version() {
+    return font_version;
+}
 
 export function get_line_lengths() {
     return line_lengths;

@@ -12,8 +12,16 @@
             max-width: 900px;
             padding-top: 64px;
         }
+        td {
+            color: initial;
+            padding: 0 8px;
+            text-align: left;
+        }
         img {
             border-radius: 10px;
+        }
+        a {
+            color: var(--mc-green);
         }
     </style>
 </head>
@@ -47,7 +55,7 @@
             </p>
             <hr>
 
-            <h3 id="mse-quick-overview">Quick Overview</h3>
+            <h3 id="mse-overview">Overview</h3>
             <img src="docs/mse/overview.png">
             <ul>
                 <li>To get started, simply start typing into the multi-line <span style="color: #00FF21;">text input</span>, which is located above the sign display (or canvas). </li>
@@ -96,6 +104,161 @@
                 to the new length, such as when there is a single pixel difference between the longest and second longest line. This is because 
                 there is no way to add a single pixel width to a line, as even the 1 wide characters add one more pixel for the gap after them.
             </i>
+            <hr>
+        </section>
+
+        <section id="bfm">
+            <h2>Banner Font Maker</h2>
+            <p>This tool works alongside the <i>Sign Editor</i>, and lets you create custom fonts intended for the <i>Banner Text Editor (WIP)</i>.</p>
+            <hr>
+
+            <h3 id="bfm-overview">Overview</h3>
+            <img src="docs/bfm/overview.png">
+            <ul>
+                <li>The <span style="color: #0094FF;">controls at the top</span> let you name your font and list the authors, while the buttons allow you to save to- or restore your work from a file.</li>
+                <li>Next, the <span style="color: #FFD800;">font metrics panel</span> measures some aspects of your banner font, such as how much of different character ranges are supported, or whether or not the font is balanced and/or monospace. 
+                <i>While these metrics are mostly for the sake of completeness and not necessary for a good font, it is generally recommended to make your fonts balanced.</i></li>
+                <li>The <span style="color: #FF0000;">character list</span> provides an overview of all characters in your font, including their size and a column for quickly spotting unbalanced designs.</li>
+                <li>Finally, the <span style="color: #00FF21;">transfer buttons</span> are your way to move designs back and forth between the <i>Sign Editor</i> and the <i>character list</i>; add, remove or overwrite them.</li>
+            </ul>
+            <hr>
+
+            <h3 id="bfm-controls">Controls</h3>
+            <h4>Left Arrow Button (🡸)</h4>
+            <p>Moves the current design for <b>the currently selected character</b> in the character list into the <i>Sign Editor</i>, allowing you to edit or review existing designs.</p>
+            <h4>Right Arrow Button (🡺)</h4>
+            <p>When you want <b>to save a character design</b> in the <i>Sign Editor</i>, this button lets you either:
+                <ul>
+                    <li><b>Add a new character</b> to the font, for this simply have the corresponding option selected at the bottom of the <i>character list</i>. <i>You will be prompted to enter the desired character.</i></li>
+                    <li><b>Overwrite the design for an existing character</b>, simply select the character to write the new design to from the <i>character list</i>.</li>
+                </ul>
+            </p>
+            <h4>Discard Button (⌫)</h4>
+            <p>This will <b>remove the selected character</b> from the font. <i>Be careful, the design will be lost!</i></p>
+            <hr>
+
+            <h3 id="bfm-file-format">File Format</h3>
+            <p>The banner font format (.mast) is a custom text-based file format intended to store custom ascii-art designs for different 
+                characters and all related metadata. The specifications are the following:
+            </p>
+            <p>A banner font file <b>always begins with a header section</b>, each field separated by a newline (\n):</p>
+            <table>
+                <tr><th>Header Section</th><th>details</th></tr>
+                <tr><td>Format / Version Identifier</td><td>The string literal "MAST1", used to check for compatibility.</td></tr>
+                <tr><td>Font Name</td><td>This field contains the name for the font given by the user.</td></tr>
+                <tr><td>Font Author(s)</td><td>The author field filled in by the user, encouraged to be comma-separated for multiple authors.</td></tr>
+                <tr><td>Font Tags</td><td>A space-separated list of metadata tags about the font.</td></tr>
+                <tr><td>Size Info</td><td>"Max Lines" and "# of Characters" fields as decimal strings. See below.</td></tr>
+            </table>
+            <table>
+                <tr><th>Font Tag</th><th>meaning</th></tr>
+                <tr><td>UNBAL</td><td>This tag warns that the font is not balanced and might be difficult to work with.</td></tr>
+                <tr><td>MONO</td><td>Denotes that all characters of this font have the same size, ie. the font is monospace.</td></tr>
+                <tr><td>ASCII</td><td>The font maps all printable characters of the 7-bit ASCII table (from ! to ~).</td></tr>
+                <tr><td>FV_OLD</td><td>The font was designed with the old/classic font version (pre-1.13).</td></tr>
+            </table>
+            <table>
+                <tr><th>Size Info</th><th>details</th></tr>
+                <tr><td>Max Lines</td><td>The most number of lines used by the "tallest" character in this font.</td></tr>
+                <tr><td>&lt;SPACE&gt;</td><td>A single space for separating the two fields.</td></tr>
+                <tr><td># of Characters</td><td>The number of characters that are mapped by this font in total.</td></tr>
+            </table>
+            <p>After the header, there is <b>n (= "# of Characters")</b> number of consecutive character mapping sections:</p>
+            <table>
+                <tr><th>Character Mapping</th><th>details</th></tr>
+                <tr><td>Char</td><td>The actual character this design is mapped to.</td></tr>
+                <tr><td>&lt;SPACE&gt;</td><td>A single separating space.</td></tr>
+                <tr><td>Width</td><td>The (max) width of the character design in pixels.</td></tr>
+            </table>
+            <p>In the event the <b>height (number of lines)</b> of the design differs from <b>"Max Lines"</b>, the following segment is also inserted:</p>
+            <table>
+                <tr><td>&lt;SPACE&gt;</td><td>A single separating space.</td></tr>
+                <tr><td>&lt;l&gt;</td><td>The literal character "l" for indicating "lines".</td></tr>
+                <tr><td>Lines Override</td><td>The actual number of lines for this character (overriding "Max Lines").</td></tr>
+            </table>
+            <p>In the event the character is unbalanced, the following segment may also be appended:</p>
+            <table>
+                <tr><td>&lt;SPACE&gt;</td><td>A single separating space.</td></tr>
+                <tr><td>&lt;ub&gt;</td><td>The literal string "ub", indicating "unbalanced".</td></tr>
+            </table>
+            <p>Finally, the actual character design is inserted:</p>
+            <table>
+                <tr><td>&lt;NEWLINE&gt;</td><td>A single separating newline (\n).</td></tr>
+                <tr><td>Design</td><td>The actual design, taking up "Max Lines" number of lines unless "Lines Override" specifies otherwise.</td></tr>
+            </table>
+            <hr>
+        </section>
+
+        <section id="cwc">
+            <h2>Character Width Calculator</h2>
+            <p>This tool can determine the character widths of any minecraft bitmap font. 
+                This is a quite niche and technical tool, as it was mainly developed just to 
+                generate the "char sizes" files needed for the <i>Sign Editor</i> and other tools. 
+                <br>
+                You can also use it to <b>browse through all supported characters</b> or <b>test your custom font textures</b>, as it provides a preview for each character.
+            </p>
+            <hr>
+
+            <h3 id="cwc-usage">Basic Usage</h3>
+            <p>Once you select the desired <i>font mapping</i>, you will see how many (bitmap) providers were found in that file.
+                For each provider, you will see a dropdown with the name of the texture associated with that provider.
+                When you open a dropdown, all characters mapped by that provider will get processed, which might take a few seconds.
+                You will see the results appear in a table within the dropdown, where you can see the texture and width of each character in that provider.
+            </p>
+            <hr>
+
+            <h3 id="cwc-font-mappings">Font Mappings</h3>
+            <p>The tool uses <a href="https://minecraft.wiki/w/Font#Providers" target="_blank">the same format as the game itself</a>, 
+                where any number of providers can be defined in the same JSON file. However, <b>only bitmap providers are supported</b> 
+                by this tool, all other providers are ignored. <i>As only a single file is supported, reference providers cannot be implemented; 
+                you must manually inline them before use.</i>
+            </p>
+            <p>You can upload a custom JSON file, or use some common ones from the server: 
+                <ul>
+                    <li>Default: These are the font mappings used by the rest of the tools by default, 
+                        it is an inlined version of the current (modern) in-game font.
+                        <a href="./external/font_mappings/default.json" target="_blank">default.json</a>
+                    </li>
+                    <li>Classic: This bitmap provider is hand-made for the old (pre-1.13) <a href="./external/textures/old_ascii.png" target="_blank">ascii.png</a> texture. 
+                        <a href="./external/font_mappings/old.json" target="_blank">old.json</a>
+                    </li>
+                </ul>
+            </p>
+            <h4>Space Width</h4>
+            <p>While the tool ignores space providers, you can still <b>set a custom width for the space character</b> through these controls.</p>
+            <hr>
+
+            <h3 id="cwc-atlas-textures">Atlas Textures</h3>
+            <p>Each bitmap provider has a file field pointing to its texture atlas. 
+                <i>The "minecraft:font/" part of this field is automatically stripped by the tool 
+                to make the hosted mappings work with their stored textures.</i>
+            </p>
+            <p><b>You can replace the character atlas of any provider with your own texture</b>; simply upload an image then enable the "Replace" checkbox. 
+                Finally, open the dropdown to process the provider, or close and reopen it if it was already processed.
+                <i>(The atlas image that was actually used will appear above the results table.)</i>
+            </p>
+            <hr>
+
+            <h3 id="cwc-output-file">Output File</h3>
+            <p>As you open the different providers, the results are also accumulated in a list that can be downloaded as a text file. 
+                Next to the "Download Results" button you can see how many characters are currently in this output list. You can reset the list by refreshing the page.
+            </p>
+            <p>The output file is a text file containing tab-seperated values (<a href="https://en.wikipedia.org/wiki/Tab-separated_values" target="_blank">TSV</a>), each row containing the following columns:
+                <ul>
+                    <li>The character itself.</li>
+                    <li>The determined width of the character (in pixels).</li>
+                    <li>The (maximum) height of the character texture. </li>
+                    <li>The ascent of the character. </li>
+                </ul>
+                <i>Note: the height and ascent are the same for all characters in a provider.</i>
+            </p>
+            <h4>Ready-to-use files</h4>
+            <p>The pre-processed character sizes for the different font versions are available here:
+                <ul>
+                    <li>Default (modern) font: <a href="./char_sizes/default.txt" target="_blank">default.txt</a> (ascii.png only: <a href="./char_sizes/ascii.txt" target="_blank">ascii.txt</a>)</li>
+                    <li>Classic (pre-1.13) font: <a href="./char_sizes/old.txt" target="_blank">old.txt</a></li>
+                </ul>
+            </p>
             <hr>
 
         </section>
