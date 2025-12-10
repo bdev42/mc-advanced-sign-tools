@@ -20,6 +20,9 @@
         img {
             border-radius: 10px;
         }
+        a {
+            color: var(--mc-green);
+        }
     </style>
 </head>
 <body>
@@ -102,12 +105,12 @@
                 there is no way to add a single pixel width to a line, as even the 1 wide characters add one more pixel for the gap after them.
             </i>
             <hr>
-
         </section>
 
         <section id="bfm">
             <h2>Banner Font Maker</h2>
             <p>This tool works alongside the <i>Sign Editor</i>, and lets you create custom fonts intended for the <i>Banner Text Editor (WIP)</i>.</p>
+            <hr>
 
             <h3 id="bfm-overview">Overview</h3>
             <img src="docs/bfm/overview.png">
@@ -184,6 +187,80 @@
                 <tr><td>Design</td><td>The actual design, taking up "Max Lines" number of lines unless "Lines Override" specifies otherwise.</td></tr>
             </table>
             <hr>
+        </section>
+
+        <section id="cwc">
+            <h2>Character Width Calculator</h2>
+            <p>This tool can determine the character widths of any minecraft bitmap font. 
+                This is a quite niche and technical tool, as it was mainly developed just to 
+                generate the "char sizes" files needed for the <i>Sign Editor</i> and other tools. 
+                <br>
+                You can also use it to <b>browse through all supported characters</b> or <b>test your custom font textures</b>, as it provides a preview for each character.
+            </p>
+            <hr>
+
+            <h3 id="cwc-usage">Basic Usage</h3>
+            <p>Once you select the desired <i>font mapping</i>, you will see how many (bitmap) providers were found in that file.
+                For each provider, you will see a dropdown with the name of the texture associated with that provider.
+                When you open a dropdown, all characters mapped by that provider will get processed, which might take a few seconds.
+                You will see the results appear in a table within the dropdown, where you can see the texture and width of each character in that provider.
+            </p>
+            <hr>
+
+            <h3 id="cwc-font-mappings">Font Mappings</h3>
+            <p>The tool uses <a href="https://minecraft.wiki/w/Font#Providers" target="_blank">the same format as the game itself</a>, 
+                where any number of providers can be defined in the same JSON file. However, <b>only bitmap providers are supported</b> 
+                by this tool, all other providers are ignored. <i>As only a single file is supported, reference providers cannot be implemented; 
+                you must manually inline them before use.</i>
+            </p>
+            <p>You can upload a custom JSON file, or use some common ones from the server: 
+                <ul>
+                    <li>Default: These are the font mappings used by the rest of the tools by default, 
+                        it is an inlined version of the current (modern) in-game font.
+                        <a href="./external/font_mappings/default.json" target="_blank">default.json</a>
+                    </li>
+                    <li>Classic: This bitmap provider is hand-made for the old (pre-1.13) <a href="./external/textures/old_ascii.png" target="_blank">ascii.png</a> texture. 
+                        <a href="./external/font_mappings/old.json" target="_blank">old.json</a>
+                    </li>
+                </ul>
+            </p>
+            <h4>Space Width</h4>
+            <p>While the tool ignores space providers, you can still <b>set a custom width for the space character</b> through these controls.</p>
+            <hr>
+
+            <h3 id="cwc-atlas-textures">Atlas Textures</h3>
+            <p>Each bitmap provider has a file field pointing to its texture atlas. 
+                <i>The "minecraft:font/" part of this field is automatically stripped by the tool 
+                to make the hosted mappings work with their stored textures.</i>
+            </p>
+            <p><b>You can replace the character atlas of any provider with your own texture</b>; simply upload an image then enable the "Replace" checkbox. 
+                Finally, open the dropdown to process the provider, or close and reopen it if it was already processed.
+                <i>(The atlas image that was actually used will appear above the results table.)</i>
+            </p>
+            <hr>
+
+            <h3 id="cwc-output-file">Output File</h3>
+            <p>As you open the different providers, the results are also accumulated in a list that can be downloaded as a text file. 
+                Next to the "Download Results" button you can see how many characters are currently in this output list. You can reset the list by refreshing the page.
+            </p>
+            <p>The output file is a text file containing tab-seperated values (<a href="https://en.wikipedia.org/wiki/Tab-separated_values" target="_blank">TSV</a>), each row containing the following columns:
+                <ul>
+                    <li>The character itself.</li>
+                    <li>The determined width of the character (in pixels).</li>
+                    <li>The (maximum) height of the character texture. </li>
+                    <li>The ascent of the character. </li>
+                </ul>
+                <i>Note: the height and ascent are the same for all characters in a provider.</i>
+            </p>
+            <h4>Ready-to-use files</h4>
+            <p>The pre-processed character sizes for the different font versions are available here:
+                <ul>
+                    <li>Default (modern) font: <a href="./char_sizes/default.txt" target="_blank">default.txt</a> (ascii.png only: <a href="./char_sizes/ascii.txt" target="_blank">ascii.txt</a>)</li>
+                    <li>Classic (pre-1.13) font: <a href="./char_sizes/old.txt" target="_blank">old.txt</a></li>
+                </ul>
+            </p>
+            <hr>
+
         </section>
     </main>
     <a id="scroll-to-top" href="#">🔝</a>
